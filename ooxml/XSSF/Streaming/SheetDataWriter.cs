@@ -192,11 +192,17 @@ namespace NPOI.XSSF.Streaming
             NumberOfCellsOfLastFlushedRow = row.LastCellNum;
             NumberOfFlushedRows++;
             BeginRow(rownum, row);
-            var cells = row.GetEnumerator();
-            int columnIndex = 0;
-            while (cells.MoveNext())
+             //var cells = row.GetEnumerator();
+            //int columnIndex = 0;
+            //while (cells.MoveNext())
+            //{
+            //    WriteCell(columnIndex++, cells.Current);
+            //}
+
+            //2019-7-25 20:34:25 解决有单元格合并时,遇到不连续index时,后面数据丢失;或者修改MoveNext实现
+            foreach (var cell in row.Cells)
             {
-                WriteCell(columnIndex++, cells.Current);
+                WriteCell(cell.ColumnIndex, cell);
             }
             EndRow();
         }
